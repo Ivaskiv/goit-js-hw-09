@@ -6,12 +6,20 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import Notiflix from 'notiflix';
 
-const date = document.getElementById('datetime-picker');
-const startBtn = document.querySelector('[data-start]');
-const daysEl = document.querySelector('[data-days]');
-const hoursEl = document.querySelector('[data-hours]');
-const minutesEl = document.querySelector('[data-minutes]');
-const secondsEl = document.querySelector('[data-seconds]');
+const elements = {
+  date: document.getElementById('datetime-picker'),
+  startBtn: document.querySelector('[data-start]'),
+  daysEl: document.querySelector('[data-days]'),
+  hoursEl: document.querySelector('[data-hours]'),
+  minutesEl: document.querySelector('[data-minutes]'),
+  secondsEl: document.querySelector('[data-seconds]'),
+};
+function disableStartBtn(selectedDate) {
+  elements.startBtn.disabled = selectedDate <= new Date();
+  if (elements.startBtn.disabled) {
+    Notiflix.Notify.warning('Please choose a date in the future');
+  }
+}
 const options = {
   enableTime: true,
   time_24hr: true,
@@ -19,19 +27,13 @@ const options = {
   minuteIncrement: 1,
   onClose(selectedDates) {
     const selectedDate = new Date(selectedDates[0]);
-    if (selectedDate <= new Date()) {
-      Notiflix.Notify.warning('Please choose a date in the future');
-      startBtn.disabled = true;
-    } else {
-      startBtn.disabled = false;
-    }
+    disableStartBtn(selectedDate);
   },
 };
-const datePicker = flatpickr(date, options);
-startBtn.addEventListener('click', () => {
+const datePicker = flatpickr(elements.date, options);
+elements.startBtn.addEventListener('click', () => {
   startTimer(datePicker.selectedDates[0]);
 });
-// console.log(datePicker.selectedDates[0]);
 function startTimer(endDate) {
   const timerInterval = setInterval(() => {
     const currentTime = new Date();
@@ -71,8 +73,8 @@ function addLeadingZero(value) {
 }
 function updateTimeFields(timeRemaining) {
   const { days, hours, minutes, seconds } = convertMs(timeRemaining);
-  daysEl.textContent = `${addLeadingZero(days)}`;
-  hoursEl.textContent = `${addLeadingZero(hours)}`;
-  minutesEl.textContent = `${addLeadingZero(minutes)}`;
-  secondsEl.textContent = `${addLeadingZero(seconds)}`;
+  elements.daysEl.textContent = `${addLeadingZero(days)}`;
+  elements.hoursEl.textContent = `${addLeadingZero(hours)}`;
+  elements.minutesEl.textContent = `${addLeadingZero(minutes)}`;
+  elements.secondsEl.textContent = `${addLeadingZero(seconds)}`;
 }
