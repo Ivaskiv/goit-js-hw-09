@@ -1,6 +1,6 @@
 import Notiflix from 'notiflix';
 const { Notify } = require('notiflix');
-Notiflix.Init();
+
 const form = document.querySelector('.form');
 form.addEventListener('submit', function (event) {
   event.preventDefault();
