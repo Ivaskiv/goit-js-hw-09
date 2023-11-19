@@ -4,23 +4,10 @@ const { Notify } = require('notiflix');
 const form = document.querySelector('.form');
 form.addEventListener('submit', function (event) {
   event.preventDefault();
-  // const formELement = event.target;
-  // const delay = parseInt(formELement.elements.delay.value);
-  // const step = parseInt(formELement.elements.step.value);
-  // const amount = parseInt(formELement.elements.amount.value);
-  // if (isNaN(delay) || isNaN(step) || isNaN(amount)) {
-  //   alert('Please enter valid numbers');
-  //   return;
-  // }
-  // console.log({ delay, step, amount });
   const { delay, step, amount } = event.target.elements;
   const [parsedDelay, parsedStep, parsedAmount] = [delay, step, amount].map(
     input => parseInt(input.value)
   );
-  // if ([parsedDelay, parsedStep, parsedAmount].some(isNaN)) {
-  //   Notiflix.Notify.warning('Please enter valid numbers');
-  //   return;
-  // }
   let currentDelay = parsedDelay;
   for (let i = 1; i <= parsedAmount; i += 1) {
     createPromise(i, currentDelay)
@@ -30,7 +17,7 @@ form.addEventListener('submit', function (event) {
         );
       })
       .catch(({ position, delay }) => {
-        Notiflix.Notify.success(
+        Notiflix.Notify.failure(
           `❌ Rejected promise ${position} in ${delay}ms`
         );
       });
@@ -44,7 +31,6 @@ function createPromise(position, delay) {
   const shouldResolve = Math.random() > 0.3;
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      // shouldResolve ? resolve(obj) : reject(obj);
       if (shouldResolve) {
         // Fulfill
         resolve(obj);
