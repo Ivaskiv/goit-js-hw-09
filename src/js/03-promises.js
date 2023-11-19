@@ -1,5 +1,5 @@
 import Notiflix from 'notiflix';
-const { Notify } = require('notiflix');
+// const { Notify } = require('notiflix');
 
 const form = document.querySelector('.form');
 form.addEventListener('submit', function (event) {
