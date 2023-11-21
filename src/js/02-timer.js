@@ -14,12 +14,9 @@ const elements = {
   minutesEl: document.querySelector('[data-minutes]'),
   secondsEl: document.querySelector('[data-seconds]'),
 };
-function disableStartBtn(selectedDate) {
-  elements.startBtn.disabled = selectedDate <= new Date();
-  if (elements.startBtn.disabled) {
-    Notiflix.Notify.warning('Please choose a date in the future');
-  }
-}
+//------------
+elements.startBtn.disabled = true;
+//------------
 const options = {
   enableTime: true,
   time_24hr: true,
@@ -27,18 +24,29 @@ const options = {
   minuteIncrement: 1,
   onClose(selectedDates) {
     const selectedDate = new Date(selectedDates[0]);
-    disableStartBtn(selectedDate);
+    const currentDate = new Date();
+    console.log(selectedDate);
+    //------------
+    if (currentDate > selectedDate) {
+      Notiflix.Notify.warning('Please choose a date in the future');
+    }
+    if (selectedDate > currentDate) {
+      elements.startBtn.disabled = false;
+      //------------
+    }
   },
 };
+
 const datePicker = flatpickr(elements.date, options);
 elements.startBtn.addEventListener('click', () => {
   startTimer(datePicker.selectedDates[0]);
 });
+
 function startTimer(endDate) {
   const timerInterval = setInterval(() => {
     const currentTime = new Date();
     const timeRemaining = endDate - currentTime;
-
+    // коли timeRemaining стає менше або дорівнює нулю тобто таймер дійшов до кінцевої дати, таймер буде зупинено, і виведене повідомлення "Countdown finished"
     if (timeRemaining <= 0) {
       clearInterval(timerInterval);
       updateTimeFields(0);
