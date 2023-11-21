@@ -32,7 +32,6 @@ const options = {
     }
     if (selectedDate > currentDate) {
       elements.startBtn.disabled = false;
-      //------------
     }
   },
 };
